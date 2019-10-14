@@ -10,6 +10,5 @@ from django.http import JsonResponse
 
 @csrf_exempt
 def index_portafolios(request):
-    portafolios_list = {"response": "success"}
-    # return HttpResponse(serializers.serialize("json", portafolios_list))
-    return JsonResponse(portafolios_list, )
+    portafolios_list = Portafolio.objects.all()    
+    return HttpResponse(serializers.serialize('json', portafolios_list))
