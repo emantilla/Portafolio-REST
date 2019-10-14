@@ -56,3 +56,14 @@ class PortafolioTestCase(TestCase):
         current_data = json.loads(response.content)
         self.assertEqual(current_data[0]['fields']['username'], 'emantilla')
 
+    def test_modifica_datos(self):
+        user_model = Usuario.objects.create(nombres='Elkin', apellidos='Mantill', username='emantilla',
+                                            url_foto='https://vignette.wikia.nocookie.net/leagueoflegends/images/a/a6/Jax_OriginalCentered.jpg/revision/latest/scale-to-width-down/1215?cb=20180414203245',
+                                            perfil_prof='Ing Sistemas')
+        url = '/portafolio/editar/'
+        response = self.client.put(url, json.dumps({"nombres": "Juan Camilo", "apellidos": "Cardenas", "username": "emantilla",
+                                            "url_foto": "https://www.google.com",
+                                            "perfil_prof": "Ing Sistemas"}), content_type='aplication/json')
+        current_data = json.loads(response.content)
+        self.assertEqual(current_data[0]['fields']['nombres'], 'Juan Camilo')
+
