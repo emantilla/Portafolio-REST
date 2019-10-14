@@ -50,3 +50,18 @@ def login_user(request):
         resp = []
         return HttpResponse(serializers.serialize(resp))
 
+@csrf_exempt
+def update_profile(request):
+    if request.method == 'PUT':
+        json_user = json.loads(request.body)
+        nombres = json_user['nombres']
+        apellidos = json_user['apellidos']
+        username = json_user['username']
+        url_foto = json_user['url_foto']
+        perfil_prof = json_user['perfil_prof']
+        Usuario.objects.filter(username=username).update(nombres=nombres, apellidos=apellidos)
+
+        user = Usuario.objects.filter(username=username)
+    
+    return HttpResponse(serializers.serialize('json', user))
+
