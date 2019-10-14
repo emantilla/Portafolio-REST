@@ -23,7 +23,7 @@ class PortafolioTestCase(TestCase):
         self.assertEqual(len(current_data),3)
 
     def test_registrar_usuario(self):
-        url = '/registrar/'
+        url = '/portafolio/registrar/'
         response =self.client.post(url, json.dumps({"nombres":"Juan Camilo", "apellidos":"Cardenas", "username":"jcardenas",
                                             "url_foto":"https://www.google.com",
                                             "perfil_prof":"Ing Sistemas"}),content_type='aplication/json')
