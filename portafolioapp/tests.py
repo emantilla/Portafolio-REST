@@ -21,3 +21,11 @@ class PortafolioTestCase(TestCase):
         response = self.client.get('/portafolio/')
         current_data = json.loads(response.content)
         self.assertEqual(len(current_data),3)
+
+    def test_registrar_usuario(self):
+        url = '/registrar/'
+        response =self.client.post(url, json.dumps({"nombres":"Juan Camilo", "apellidos":"Cardenas", "username":"jcardenas",
+                                            "url_foto":"https://www.google.com",
+                                            "perfil_prof":"Ing Sistemas"}),content_type='aplication/json')
+        current_data=json.loads(response.content)
+        self.assertEqual(current_data[0]['fields']['nombres'],'Juan Camilo')
