@@ -1,6 +1,7 @@
 from django.test import TestCase, Client
 from rest_framework.utils import json
 from portafolioapp.models import Usuario, Portafolio
+from django.contrib.auth.models import User
 import json
 
 # Create your tests here.
@@ -46,3 +47,12 @@ class PortafolioTestCase(TestCase):
         print(response.content)
         current_data = json.loads(response.content)
         self.assertEqual(len(current_data), 2)
+
+    def test_login(self):
+        User.objects.create_user(username='emantilla', password='abcd123')
+        url = '/portafolio/login/'
+
+        response = self.client.get(url, {'username': 'emantilla', 'password': 'abcd123'})
+        current_data = json.loads(response.content)
+        self.assertEqual(current_data[0]['fields']['username'], 'emantilla')
+
