@@ -31,7 +31,6 @@ class PortafolioTestCase(TestCase):
         self.assertEqual(current_data[0]['fields']['nombres'],'Juan Camilo')
 
     def test_listado_portafolio_publico(self):
-        url = '/portafolio/pulbico?idusuario=1&is_private=False'
         user_model = Usuario.objects.create(nombres='Elkin', apellidos='Mantill', username='emantilla',
                                             url_foto='https://vignette.wikia.nocookie.net/leagueoflegends/images/a/a6/Jax_OriginalCentered.jpg/revision/latest/scale-to-width-down/1215?cb=20180414203245',
                                             perfil_prof='Ing Sistemas')
@@ -42,6 +41,8 @@ class PortafolioTestCase(TestCase):
         Portafolio.objects.create(titulo='ana', url_imag='', descripcion='viento', tipo_archivo='jpg',
                                   is_private=False, owner=user_model)
 
-        response = self.client.get(url, format='json')
+        url = '/portafolio/publicos/'
+        response = self.client.get(url, {'username': 'emantilla', 'is_private': False})
+        print(response.content)
         current_data = json.loads(response.content)
         self.assertEqual(len(current_data), 2)
