@@ -11,3 +11,13 @@ class PortafolioTestCase(TestCase):
         response = self.client.get(url, format='json')
         self.assertEqual(response.status_code, 200)
 
+    def test_count_portafolios(self):
+        user_model = Usuario.objects.create(nombres = 'Elkin', apellidos='Mantill', username='emantilla', url_foto='https://vignette.wikia.nocookie.net/leagueoflegends/images/a/a6/Jax_OriginalCentered.jpg/revision/latest/scale-to-width-down/1215?cb=20180414203245', perfil_prof ='Ing Sistemas')
+        Portafolio.objects.create(titulo='jax', url_imag='', descripcion='pepito peres',tipo_archivo='jpg', is_private=True, owner=user_model)
+        Portafolio.objects.create(titulo='jarvan', url_imag='', descripcion='ojo', tipo_archivo='jpg',
+                                  is_private=False, owner=user_model)
+        Portafolio.objects.create(titulo='ana', url_imag='', descripcion='viento', tipo_archivo='jpg',
+                                  is_private=False, owner=user_model)
+        response = self.client.get('/portafolio/')
+        current_data = json.loads(response.content)
+        self.assertEqual(len(current_data),3)
