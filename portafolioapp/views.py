@@ -27,3 +27,13 @@ def create_user(request):
         user_model.save()
     
     return HttpResponse(serializers.serialize('json', [user_model]))
+
+@csrf_exempt
+def portafolios_pub(request): 
+    username = request.GET['username']
+    private = request.GET['is_private']
+    user = Usuario.objects.filter(username=username)
+    portf_pub = Portafolio.objects.filter(owner=user[0]).filter(is_private=private)    
+
+    return HttpResponse(serializers.serialize('json', portf_pub))
+
