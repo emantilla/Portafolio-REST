@@ -4,7 +4,8 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.core import serializers
-from django.http import JsonResponse
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
 
 # Create your views here.
 
@@ -36,4 +37,16 @@ def portafolios_pub(request):
     portf_pub = Portafolio.objects.filter(owner=user[0]).filter(is_private=private)    
 
     return HttpResponse(serializers.serialize('json', portf_pub))
+
+@csrf_exempt
+def login_user(request):
+    username = request.GET['username']
+    passwd = request.GET['password']
+    user = authenticate(username=username, password=passwd)
+    if user:
+        login(request, user)    
+        return HttpResponse(serializers.serialize("json", [user]))
+    else:
+        resp = []
+        return HttpResponse(serializers.serialize(resp))
 
